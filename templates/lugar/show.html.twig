@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lugar{% endblock %}
+
+{% block main %}
+    <h1>Lugar</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ lugar.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ lugar.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Pais</th>
+                <td>{{ lugar.pais }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ lugar.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Tipo</th>
+                <td>{{ lugar.tipo }}</td>
+            </tr>
+            <tr>
+                <th>Valoracion</th>
+                <td>{{ lugar.valoracion }}</td>
+            </tr>
+        </tbody>
+    </table>
+      {% if lugar.getFotos() %}
+    	{% for foto in lugar.getFotos %}
+    	
+    		
+    	<div class="col m-3 p-3 text-center bg-light">
+			<img class="rounded border movie-cover" style="max-width: 240px"
+			 src="{{ asset(photos_directory~'/'~(foto.archivo ?? 'default.jpg'))}}">
+	    </div>
+        {% endfor %}
+     
+       
+    {% endif %}
+    
+ 
+ 
+ {% if lugar.getComentarios() %}
+    	{% for comentario in lugar.getComentarios() %}
+    	
+    		<div class="card w-100">
+    			<p>{{ comentario.texto }}  </p>
+    			<p> {{ comentario.fecha|date("m/d/Y") }} </p>
+    		</div>	
+    		<form method="post" action="{{ path('app_comentario_delete', {'id': comentario.id, 'lugar': lugar.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comentario.id) }}">
+                <button class="btn btn-danger">Delete</button>
+            </form>
+                		
+    	
+	    
+  
+        {% endfor %}
+    {% endif %}
+ 
+ 
+    <h1>Nuevo comentario</h1>
+
+    {{ form(form, {'action': path('app_comentario_new', {'id':lugar.id}) }) }}
+
+
+    <a href="{{ path('app_lugar_index') }}">back to list</a>
+
+    <a href="{{ path('app_lugar_edit', {'id': lugar.id}) }}">edit</a>
+
+    {{ include('lugar/_delete_form.html.twig') }}
+{% endblock %}

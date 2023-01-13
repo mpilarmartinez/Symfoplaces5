@@ -1,0 +1,33 @@
+<table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Pais</th>
+                <th>Descripcion</th>
+                <th>Tipo</th>
+                <th>Valoracion</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for lugar in lugars %}
+            <tr>
+                <td>{{ lugar.id }}</td>
+                <td>{{ lugar.nombre }}</td>
+                <td>{{ lugar.pais }}</td>
+                <td>{{ lugar.descripcion }}</td>
+                <td>{{ lugar.tipo }}</td>
+                <td>{{ lugar.valoracion }}</td>
+                <td>
+                    <a href="{{ path('app_lugar_show', {'id': lugar.id}) }}">show</a>
+                    <a href="{{ path('app_lugar_edit', {'id': lugar.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+ </table>
